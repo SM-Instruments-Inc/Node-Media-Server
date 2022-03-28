@@ -17,11 +17,16 @@ class NodeTransSession extends EventEmitter {
     this.conf = conf;
   }
 
+  resolveNameForPath(streamName) {
+    const regex = ':';
+    return streamName.replace(regex, '-');
+  }
+
   run() {
     let vc = this.conf.vc || 'copy';
     let ac = this.conf.ac || 'copy';
     let inPath = 'rtmp://127.0.0.1:' + this.conf.rtmpPort + this.conf.streamPath;
-    let ouPath = `${this.conf.mediaroot}/${this.conf.streamApp}/${this.conf.streamName}`;
+    let ouPath = `${this.conf.mediaroot}/${this.conf.streamApp}/${this.resolveNameForPath(this.conf.streamName)}`;
     let mapStr = '';
 
     if (this.conf.rtmp && this.conf.rtmpApp) {

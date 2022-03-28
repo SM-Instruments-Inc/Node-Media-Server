@@ -18,8 +18,9 @@ class NodeTransSession extends EventEmitter {
   }
 
   resolveNameForPath(streamName) {
-    const regex = ':';
-    return streamName.replaceAll(regex, '-');
+    const result = streamName.replaceAll(":", '-');
+    console.log(`Changing ${streamName} into ${result}`);
+    return result;
   }
 
   run() {

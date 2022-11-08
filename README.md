@@ -24,9 +24,10 @@ A Node.js implementation of RTMP/HTTP-FLV/WS-FLV/HLS/DASH Media Server
 
 # Features
  - Cross platform support Windows/Linux/Unix
- - Support H.264/H.265(flv_id=12)/AAC/MP3/SPEEX/NELLYMOSER/G.711/OPUS(flv_id=13)
+ - Support H.264/AAC/MP3/SPEEX/NELLYMOSER/G.711
+ - Extension support H.265(flv_id=12)/VP8(flv_id=10)/VP9(flv_id=11)/OPUS(flv_id=13)
  - Support GOP cache
- - Support remux to LIVE-HTTP/WS-FLV,Support [NodePlayer.js](https://www.nodemedia.cn/product/nodeplayer-js) playback
+ - Support remux to LIVE-HTTP/WS-FLV, Support [NodePlayer.js](https://www.nodemedia.cn/product/nodeplayer-js) playback
  - Support remux to HLS/DASH/MP4
  - Support xycdn style authentication
  - Support event callback
@@ -107,7 +108,7 @@ Stream Type : Custom Streaming Server
 
 URL : rtmp://localhost/live
 
-Stream key : STREAM_NAME
+Stream key : STREAM_NAME?sign=expires-HashValue (sign parameter required only if publish auth is enabled)
 
 # Accessing the live stream
 ## RTMP 
@@ -252,10 +253,12 @@ const config = {
 > The 'sign' keyword can not be modified
 
 # H.265 over RTMP
-H.265 does not appear in Adobe's official specification. Id 12 is the standard for most cloud services in China.  
-Publish or Transcode: [ffmpeg-hw-win32](#ffmpeg-hw-win32)  
-Play:[NodeMediaClient-Android](#android) and [NodeMediaClient-iOS](#ios)  
-Pure JavaScrip live stream player: [NodePlayer.js](https://github.com/illuspas/NodePlayer.js)
+- Play:[NodeMediaClient-Android](#android) and [NodeMediaClient-iOS](#ios)  
+- Commercial Pure JavaScrip live stream player: [NodePlayer.js](https://www.nodemedia.cn/product/nodeplayer-js)
+- OpenSource Pure JavaScrip live stream player: [pro-flv.js](https://github.com/illuspas/pro-fiv.js)
+
+# VP8 VP9 OPUS over RTMP
+[Extension ffmpeg](https://github.com/NodeMedia/ffmpeg)
 
 # Event callback
 ```js
@@ -509,8 +512,10 @@ const config = {
         app: 'live',
         hls: true,
         hlsFlags: '[hls_time=2:hls_list_size=3:hls_flags=delete_segments]',
+        hlsKeep: true, // to prevent hls file delete after end the stream
         dash: true,
-        dashFlags: '[f=dash:window_size=3:extra_window_size=5]'
+        dashFlags: '[f=dash:window_size=3:extra_window_size=5]',
+        dashKeep: true // to prevent dash file delete after end the stream
       }
     ]
   }
